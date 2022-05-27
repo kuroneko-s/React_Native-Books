@@ -3,109 +3,97 @@
  * https://github.com/facebook/react-native
  *
  * @format
- * @flow strict-local
  */
 
-import React from 'react';
-import type {Node} from 'react';
+import React, {useEffect} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
-  View,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
+import AddTodo from './components/AddTodo';
+import DateHead from './components/DateHead';
+import Empty from './components/Empty';
+import {useState} from 'react';
+import TodoList from './components/TodoList';
+import todosStorage from './storages/todosStorage';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const App = () => {
+  // Platform.OS === 'ios' ? 'padding' : undefined
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+  const [todos, setTodos] = useState([
+    {
+      id: 1,
+      text: '작업환경 설정',
+      done: true,
+    },
+    {
+      id: 2,
+      text: '기초',
+      done: false,
+    },
+    {
+      id: 3,
+      text: '심화',
+      done: false,
+    },
+  ]);
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const onInsert = text => {
+    const nextId =
+      todos.length > 0 ? Math.max(...todos.map(todo => todo.id)) + 1 : 1;
+    const newTodo = {
+      id: nextId,
+      text,
+      done: false,
+    };
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    setTodos(todos.concat(newTodo));
   };
 
+  const onToggle = id => {
+    setTodos(
+      todos.map(todo => (todo.id === id ? {...todo, done: !todo.done} : todo)),
+    );
+  };
+
+  const onDelete = id => {
+    setTodos(todos.filter(todo => todo.id !== id));
+  };
+
+  useEffect(() => {
+    todosStorage.get().then(setTodos).catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    todosStorage.set(todos).catch(console.error);
+  }, [todos]);
+
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView style={styles.block} edges={['bottom']}>
+      <KeyboardAvoidingView
+        behavior={Platform.select({ios: 'padding'})} // 작동방식을 정의할 수 있음. 안드는 안쓰는게, ios는 적용하는게 정상동작 함
+        style={styles.avoid}>
+        <DateHead />
+        {todos.length === 0 ? (
+          <Empty />
+        ) : (
+          <TodoList todos={todos} onToggle={onToggle} onDelete={onDelete} />
+        )}
+        <AddTodo onInsert={onInsert} />
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  block: {
+    flex: 1,
+    backgroundColor: 'white',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  avoid: {
+    flex: 1,
   },
 });
 
