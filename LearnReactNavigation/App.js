@@ -20,7 +20,6 @@ const Stack = createNativeStackNavigator();
 
 function getHeaderTitle(route) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
-  console.log(routeName);
   const nameMap = {
     Home: '홈',
     Search: '검색',

@@ -5,11 +5,12 @@
  * @format
  */
 
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Button, StyleSheet, View, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -17,11 +18,19 @@ function HomeScreen({navigation}) {
   return (
     <View>
       <Text>Home</Text>
-      <Button
-        title="Detail 1열기"
-        onPress={() => navigation.push('Detail', {id: 1})}
-      />
+      <OpenDetailButton />
     </View>
+  );
+}
+
+function OpenDetailButton() {
+  const navigation = useNavigation();
+
+  return (
+    <Button
+      title="Detail 1 열기"
+      onPress={() => navigation.push('Detail', {id: 1})}
+    />
   );
 }
 
@@ -54,6 +63,16 @@ const MainScreen = () => {
   const bf = false;
   const notifiBadge = bf ? 6 : 'new';
   const number = 5;
+
+  useFocusEffect(
+    useCallback(() => {
+      console.log('화면을 보고 있다.');
+      return () => {
+        console.log('다른 화면으로 넘어감');
+      };
+    }, []),
+  );
+
   return (
     <Tab.Navigator
       initialRouteName="Home"

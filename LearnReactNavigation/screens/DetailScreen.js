@@ -1,13 +1,18 @@
+import {useRoute} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {StyleSheet, View, Text, Button} from 'react-native';
 import {Dimensions} from 'react-native';
 
 const width = Dimensions.get('window').width;
 
+function IDText() {
+  const route = useRoute();
+  return <Text style={styles.text}>Detail {route.params.id} Screen</Text>;
+}
+
 // push는 stack에 페이지를 쌓아가고 => native-stack-navigate에서만 사용가능
 // navigate는 페이지가 같으면 파라미터 값만 바뀜. => native-stack-navigate외에도 다른 네비게이터에서도 있음
 function DetailScreen({navigation, route}) {
-  console.log('run');
   const {id} = route.params;
 
   useEffect(() => {
@@ -18,7 +23,7 @@ function DetailScreen({navigation, route}) {
 
   return (
     <View style={styles.block}>
-      <Text style={styles.text}>Detail {id} Screen</Text>
+      <IDText />
       <View style={styles.buttons}>
         <Button
           style={styles.button}
