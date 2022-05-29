@@ -4,25 +4,62 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 import WriteHeader from '../../conponents/WriteHeader';
 import WriteEdior from './../../conponents/WriteEditor';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import LogContext from '../../context/LogContext';
 
 function WriteScreen() {
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
   const navigation = useNavigation();
-  const {onCreate} = useContext(LogContext);
+  const {onCreate, onModify, onRemove} = useContext(LogContext);
+  const route = useRoute();
+
+  const log = route.params?.log;
+  const [title, setTitle] = useState(log?.title ?? '');
+  const [body, setBody] = useState(log?.body ?? '');
 
   const onSave = () => {
-    onCreate({
-      title,
-      body,
-      date: new Date().toISOString(),
-    });
+    if (log) {
+      onModify({
+        id: log.id,
+        title,
+        body,
+        date: log.date,
+      });
+    } else {
+      onCreate({
+        title,
+        body,
+        date: new Date().toISOString(),
+      });
+    }
     navigation.pop();
+  };
+
+  const onAskRemove = () => {
+    Alert.alert(
+      '삭제',
+      '정말로 삭제하시겠어요?',
+      [
+        {
+          text: '취소',
+          style: 'cancel',
+        },
+        {
+          text: '삭제',
+          style: 'destructive',
+          onPress: () => {
+            onRemove(log?.id);
+            navigation.pop();
+          },
+        },
+      ],
+      {
+        cancelable: true,
+      },
+    );
   };
 
   return (
@@ -32,7 +69,11 @@ function WriteScreen() {
       <KeyboardAvoidingView // IOS에서 키보드로 인해서 내용이 길어질때 짤리는 문제 해결해줘야함
         style={styles.avoidingView}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <WriteHeader onSave={onSave} />
+        <WriteHeader
+          onSave={onSave}
+          onAskRemove={onAskRemove}
+          isEditing={!!log}
+        />
         <WriteEdior
           title={title}
           onChangeBody={setBody}

@@ -5,7 +5,7 @@ const LogContext = createContext();
 
 export function LogContextProvider({children}) {
   const [logs, setLogs] = useState(
-    Array.from({length: 2}).map((_, index) => ({
+    Array.from({length: 12}).map((_, index) => ({
       id: v4(),
       title: `Log ${index}`,
       body: `Log ${index}`,
@@ -24,8 +24,20 @@ export function LogContextProvider({children}) {
     setLogs([log, ...logs]);
   };
 
+  const onModify = modified => {
+    const newLogs = logs.map(log => (log.id === modified.id ? modified : log));
+
+    setLogs(newLogs);
+  };
+
+  const onRemove = id => {
+    const newLogs = logs.filter(log => log.id !== id);
+
+    setLogs(newLogs);
+  };
+
   return (
-    <LogContext.Provider value={{logs, onCreate}}>
+    <LogContext.Provider value={{logs, onCreate, onModify, onRemove}}>
       {children}
     </LogContext.Provider>
   );
