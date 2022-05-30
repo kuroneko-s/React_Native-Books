@@ -19,6 +19,7 @@ function WriteScreen() {
   const log = route.params?.log;
   const [title, setTitle] = useState(log?.title ?? '');
   const [body, setBody] = useState(log?.body ?? '');
+  const [date, setDate] = useState(log ? new Date(log.date) : new Date());
 
   const onSave = () => {
     if (log) {
@@ -26,13 +27,13 @@ function WriteScreen() {
         id: log.id,
         title,
         body,
-        date: log.date,
+        date: date.toISOString(),
       });
     } else {
       onCreate({
         title,
         body,
-        date: new Date().toISOString(),
+        date: date.toISOString(),
       });
     }
     navigation.pop();
@@ -73,6 +74,8 @@ function WriteScreen() {
           onSave={onSave}
           onAskRemove={onAskRemove}
           isEditing={!!log}
+          date={date}
+          onChangeDate={setDate}
         />
         <WriteEdior
           title={title}

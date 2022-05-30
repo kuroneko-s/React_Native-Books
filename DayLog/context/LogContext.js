@@ -11,6 +11,13 @@ export function LogContextProvider({children}) {
       body: `Log ${index}`,
       date: new Date().toISOString(),
     })),
+
+    {
+      id: v4(),
+      title: `Log`,
+      body: `Log`,
+      date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(),
+    },
   );
 
   const onCreate = ({title, body, date}) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import FeedListItem from './FeedListItem';
 
-function FeedList({logs, onScrolledToBottom}) {
+function FeedList({logs, onScrolledToBottom, ListHeaderComponent}) {
   const onScroll = e => {
     if (!onScrolledToBottom) {
       return;
@@ -34,6 +34,7 @@ function FeedList({logs, onScrolledToBottom}) {
       }}
       onEndReachedThreshold={0.85} // 85% 스크롤했을때 onEndReached가 호출 ( 무한 스크롤_트위터같은거 유용함 ) */
       onScroll={onScroll}
+      ListHeaderComponent={ListHeaderComponent} // 상단에 특정 component 추가해줌
     />
   );
 }

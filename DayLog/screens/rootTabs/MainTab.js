@@ -15,7 +15,8 @@ function MainTab() {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarActiveTintColor: '#a29bfe',
-      }}>
+      }}
+      initialRouteName="Calendar">
       <Tab.Screen
         name="Feeds"
         component={FeedsScreen}
