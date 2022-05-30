@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useReducer, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {View, StyleSheet, Pressable, Text} from 'react-native';
 import TransparentCircleButton from './TransparentCircleButton';
@@ -6,30 +6,50 @@ import {format} from 'date-fns';
 import {ko} from 'date-fns/locale';
 import {DateTimePickerModal} from 'react-native-modal-datetime-picker';
 
+const initState = {mode: 'date', visible: false};
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'DATE_VISIBLE':
+      return {
+        mode: 'date',
+        visible: true,
+      };
+    case 'TIME_VISIBLE':
+      return {
+        mode: 'time',
+        visible: true,
+      };
+    case 'DISVISIBLE':
+      return {
+        ...state,
+        visible: false,
+      };
+    default:
+      return state;
+  }
+};
+
 function WriteHeader({onSave, onAskRemove, isEditing, date, onChangeDate}) {
   const navigation = useNavigation();
   const onGoBack = () => navigation.pop(); // Stack 이라서
 
-  const [mode, setMode] = useState('date');
-  const [visible, setVisible] = useState(false);
+  const [state, dispatch] = useReducer(reducer, initState);
 
   const onPressDate = () => {
-    setMode('date');
-    setVisible(true);
+    dispatch({type: 'DATE_VISIBLE'});
   };
 
   const onPressTime = () => {
-    setMode('time');
-    setVisible(true);
+    dispatch({type: 'TIME_VISIBLE'});
   };
 
   const onConfirm = selectedDate => {
-    setVisible(false);
+    dispatch({type: 'DISVISIBLE'});
     onChangeDate(selectedDate);
   };
 
   const onCancel = () => {
-    setVisible(false);
+    dispatch({type: 'DISVISIBLE'});
   };
 
   return (
@@ -69,8 +89,8 @@ function WriteHeader({onSave, onAskRemove, isEditing, date, onChangeDate}) {
         </Pressable>
       </View>
       <DateTimePickerModal
-        mode={mode}
-        isVisible={visible}
+        mode={state.mode}
+        isVisible={state.visible}
         onConfirm={onConfirm}
         onCancel={onCancel}
         date={date}

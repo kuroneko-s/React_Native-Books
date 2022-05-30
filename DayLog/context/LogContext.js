@@ -1,24 +1,29 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, useEffect, useRef, useState} from 'react';
 import {v4} from 'uuid';
+import logsStorage from './../store/LogsStorage';
 
 const LogContext = createContext();
 
 export function LogContextProvider({children}) {
-  const [logs, setLogs] = useState(
-    Array.from({length: 12}).map((_, index) => ({
-      id: v4(),
-      title: `Log ${index}`,
-      body: `Log ${index}`,
-      date: new Date().toISOString(),
-    })),
+  const initLogsRef = useRef(null); // asyncStorage랑 logs state 랑 값 비교하기 위해서 ref 사용중
+  const [logs, setLogs] = useState([]);
 
-    {
-      id: v4(),
-      title: `Log`,
-      body: `Log`,
-      date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(),
-    },
-  );
+  useEffect(() => {
+    (async () => {
+      const savedLogs = await logsStorage.get();
+      if (savedLogs) {
+        initLogsRef.current = savedLogs;
+        setLogs(savedLogs);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (logs === initLogsRef.current) {
+      return;
+    }
+    logsStorage.set(logs);
+  }, [logs]);
 
   const onCreate = ({title, body, date}) => {
     const log = {
