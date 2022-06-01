@@ -1,5 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {format, formatDistanceToNow} from 'date-fns';
+import {ko} from 'date-fns/locale';
 
 function FeedsItemComponent({feed}) {
   const {date, title, body, id} = feed;
@@ -11,7 +13,9 @@ function FeedsItemComponent({feed}) {
   return (
     <Pressable android_ripple={{color: '#b2bec3'}}>
       <View style={styles.block}>
-        <Text style={styles.date}>{date}</Text>
+        <Text style={styles.date}>
+          {format(new Date(date), 'PPP kk:mm:ss ccc', {locale: ko})}
+        </Text>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.context}>{sliceContext(body)}</Text>
       </View>

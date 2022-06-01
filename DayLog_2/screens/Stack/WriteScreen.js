@@ -11,7 +11,7 @@ function WriteScreen() {
     <KeyboardAvoidingView
       style={styles.block}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <TextInput placeholder="Title" autoComplete="off" autoFocus multiline />
+      <TextInput placeholder="Title" autoComplete="off" multiline autoFocus />
       <TextInput placeholder="Context" autoComplete="off" multiline />
     </KeyboardAvoidingView>
   );

@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
 function HomeScreen() {
   return (
     <Tab.Navigator
-      initialRouteName="Feeds"
+      initialRouteName="Calendar"
       screenOptions={{
         tabBarShowLabel: false,
         tabBarActiveTintColor: '#a29bfe',
