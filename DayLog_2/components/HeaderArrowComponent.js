@@ -6,15 +6,15 @@ import {
   useWindowDimensions,
   Pressable,
   Platform,
+  Alert,
 } from 'react-native';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function HeaderComponent({}) {
+function HeaderComponent({onSave, title, body}) {
   const {width} = useWindowDimensions();
   const route = useRoute();
   const navigation = useNavigation();
-
   return (
     <View style={[styles.block, {width: width}]}>
       <View style={[styles.arrowBlock, styles.boxSize]}>
@@ -37,7 +37,24 @@ function HeaderComponent({}) {
         <View style={[styles.button, styles.boxSize]}>
           <Pressable
             style={[styles.arrow, styles.boxSize]}
-            android_ripple={{color: '#b2bec3'}}>
+            android_ripple={{color: '#b2bec3'}}
+            onPress={() => {
+              if (title === '' || body === '') {
+                Alert.alert(
+                  '확인',
+                  '제목 혹은 내용이 비어있는 상태에선 저장할 수 없습니다.',
+                  [
+                    {
+                      text: '닫기',
+                      style: 'cancel',
+                    },
+                  ],
+                );
+              } else {
+                onSave();
+                navigation.goBack();
+              }
+            }}>
             <Icon name="check-box" size={28} color={'green'} />
           </Pressable>
         </View>

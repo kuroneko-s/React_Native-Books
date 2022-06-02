@@ -1,31 +1,11 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState, useMemo, useContext} from 'react';
 import {Calendar} from 'react-native-calendars';
 import {format} from 'date-fns';
-import FeedsListComponent from './../../components/FeedsListComponent';
+import FeedsListComponent from '../../components/FeedsListComponent';
+import {feedsContext} from '../../context/FeedsContext';
 
 function CalendarTabScreen() {
-  console.log('render!');
-  const [logs, setLogs] = useState([
-    {
-      id: 1,
-      title: 'title',
-      body: 'body',
-      date: new Date().getTime(),
-    },
-    {
-      id: 1,
-      title: 'title',
-      body: 'body',
-      date: new Date().getTime() - 1000 * 60 * 60 * 24 * 3,
-    },
-    {
-      id: 1,
-      title: 'title',
-      body: 'body',
-      date: new Date().getTime() - 1000 * 60 * 60 * 24 * 8,
-    },
-  ]);
-
+  const {feeds: logs} = useContext(feedsContext);
   const [select, setSelect] = useState(format(new Date(), 'yyyy-MM-dd'));
 
   const markedDates = useMemo(() => {
@@ -48,8 +28,6 @@ function CalendarTabScreen() {
   const selectLogs = logs.filter(
     log => format(new Date(log.date), 'yyyy-MM-dd') === select,
   );
-
-  console.log(selectLogs);
 
   return (
     <FeedsListComponent

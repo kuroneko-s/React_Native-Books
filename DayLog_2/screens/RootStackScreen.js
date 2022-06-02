@@ -17,12 +17,11 @@ function RootStackScreen() {
         }}
       />
       <Stack.Screen
-        name="Wirte"
+        name="Write"
         component={WriteScreen}
         options={{
-          headerShown: true,
+          headerShown: false,
           headerBackVisible: false,
-          header: ({children}) => <HeaderArrowComponent />,
         }}
       />
     </Stack.Navigator>

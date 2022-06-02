@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {format, formatDistanceToNow} from 'date-fns';
 import {ko} from 'date-fns/locale';
+import {useNavigation} from '@react-navigation/native';
 
 function FeedsItemComponent({feed}) {
   const {date, title, body, id} = feed;
@@ -10,8 +11,14 @@ function FeedsItemComponent({feed}) {
     return text.slice(0, 100) + '...';
   };
 
+  const navigation = useNavigation();
+
+  const onPress = () => {
+    navigation.navigate('Write', {id});
+  };
+
   return (
-    <Pressable android_ripple={{color: '#b2bec3'}}>
+    <Pressable android_ripple={{color: '#b2bec3'}} onPress={onPress}>
       <View style={styles.block}>
         <Text style={styles.date}>
           {format(new Date(date), 'PPP kk:mm:ss ccc', {locale: ko})}

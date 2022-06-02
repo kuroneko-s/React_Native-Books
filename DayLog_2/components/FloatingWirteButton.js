@@ -16,7 +16,7 @@ function FloatingWirteButton() {
           },
         ]}
         android_ripple={{color: 'white'}} // android는 물결 이벤트가 있어서 opacity 값을 안줌
-        onPress={() => navigation.navigate('Wirte')}>
+        onPress={() => navigation.navigate('Write')}>
         <Icon name="add" size={32} style={styles.icon} />
       </Pressable>
     </View>

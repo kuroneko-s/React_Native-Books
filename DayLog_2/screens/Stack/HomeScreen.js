@@ -5,13 +5,15 @@ import CalendarTabScreen from './../Tab/CalendarTabScreen';
 import SearchTabScreen from './../Tab/SearchTabScreen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import HeaderComponent from '../../components/HeaderComponent';
+import {Text, TextInput, View} from 'react-native';
+import HeaderSearchComponent from '../../components/HeaderSearchComponent';
 
 const Tab = createBottomTabNavigator();
 
 function HomeScreen() {
   return (
     <Tab.Navigator
-      initialRouteName="Calendar"
+      initialRouteName="Feeds"
       screenOptions={{
         tabBarShowLabel: false,
         tabBarActiveTintColor: '#a29bfe',
@@ -43,6 +45,7 @@ function HomeScreen() {
           tabBarIcon: ({color, size}) => (
             <Icon name="search" color={color} size={size} />
           ),
+          header: ({children}) => <HeaderSearchComponent />,
         }}
       />
     </Tab.Navigator>
