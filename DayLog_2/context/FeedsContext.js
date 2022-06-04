@@ -1,17 +1,26 @@
-import React, {createContext, useState, useEffect} from 'react';
+import React, {createContext, useState, useEffect, useRef} from 'react';
 import feedsStorage from '../storage/FeedsStorage';
 
 export const feedsContext = createContext();
 
 function FeedsContextProvider({children}) {
-  const [feeds, setFeeds] = useState();
+  const initFeedsRef = useRef(null);
+  const [feeds, setFeeds] = useState([]);
 
   useEffect(() => {
-    const load = feedsStorage.get();
-    setFeeds(load);
+    (async () => {
+      const load = await feedsStorage.get();
+      if (load) {
+        initFeedsRef.current = load;
+        setFeeds(load);
+      }
+    })();
   }, []);
 
   useEffect(() => {
+    if (feeds === initFeedsRef.current) {
+      return;
+    }
     feedsStorage.set(feeds);
   }, [feeds]);
 

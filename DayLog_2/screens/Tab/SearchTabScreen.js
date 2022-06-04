@@ -7,7 +7,7 @@ import FeedsListComponent from './../../components/FeedsListComponent';
 
 function SearchTabScreen() {
   const {search, setSearch} = useContext(searchContext);
-  const {feeds, setFeeds} = useContext(feedsContext);
+  const {feeds} = useContext(feedsContext);
 
   console.log(search);
 

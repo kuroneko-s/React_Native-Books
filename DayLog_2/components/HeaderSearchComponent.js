@@ -14,7 +14,9 @@ function HeaderSearchComponent() {
         value={search}
         onChangeText={setSearch}
       />
-      <Pressable android_ripple={{color: 'white'}}>
+      <Pressable
+        android_ripple={{color: 'white'}}
+        onPress={() => setSearch('')}>
         <Icon style={styles.icon} name="cancel" size={22} color={'black'} />
       </Pressable>
     </View>
