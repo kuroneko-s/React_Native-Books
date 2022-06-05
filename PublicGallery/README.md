@@ -14,7 +14,7 @@
     - [ ] UploadScreen
     - [ ] ModifyScreen
     - [ ] SettingScreen
-    - [ ] SignInScreen
+    - [x] SignInScreen
     - [ ] WelcomeScreen
 
 ---
@@ -38,4 +38,9 @@
 
 ### 회원인증
 
-Firebase로 간단하게 구현 가능함
+Firebase로 간단하게 구현 가능함  
+로그인 화면에서 MainTab으로 바로 넘겨주면 Stack에 정보가 남아있어서 이전 화면이 다시 노출된다.
+navigation의 reset기능이 있지만 버그가 많아서 비추천  
+그래서 특정 조건에선 RootStack에서 불필요한 화면들을 제거하는 방법으로 구현
+@react-native-community/cameraroll <- 이미지를 선택하는 UI를 react-native로 직접 만들 수 있도록 도와주는 라이브러리  
+[ ] launchImageLibrary 사용시 안드로이드에서는 BASE64로 읽지 않으면 uri에서 값을 읽어올 때 문제가 발생하는게 지금도 발생하는지 확인 필요. (Google Photo 사용하는 기기에서 발생함)
