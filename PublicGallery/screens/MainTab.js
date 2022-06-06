@@ -5,19 +5,20 @@ import {useUserContext} from '../contexts/UserContext';
 function MainTab() {
   const {user} = useUserContext();
   console.log('maintab - ', user);
+
   return (
     <View style={styles.block}>
-      {user.photoURL && (
-        <Image
-          source={{uri: user.photoURL}}
-          style={{
-            width: 128,
-            height: 128,
-            marginBottom: 16,
-          }}
-          resizeMode="cover"
-        />
-      )}
+      <Image
+        style={{
+          width: 128,
+          height: 128,
+          marginBottom: 16,
+        }}
+        resizeMode="cover"
+        source={
+          user.photoURL ? {uri: user.photoURL} : require('../assets/anya15.png')
+        }
+      />
 
       <Text style={styles.text}>{`Hello, ${user.displayName}`}</Text>
     </View>

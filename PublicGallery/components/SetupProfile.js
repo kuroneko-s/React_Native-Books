@@ -27,7 +27,6 @@ function SetupProfile() {
 
   const onSubmit = async () => {
     setLoading(true);
-
     let photoURL = null;
 
     if (imageRes) {
@@ -35,18 +34,23 @@ function SetupProfile() {
       const extension = asset.fileName.split('.').pop();
       const reference = storage().ref(`/profile/${uid}.${extension}`); // 업로드 경로 지정
 
-      if (Platform.OS === 'android') {
-        // 파일 저장
-        await reference.putString(asset.base64, 'base64', {
-          contentType: asset.type,
-        });
-      } else {
-        // 파일 저장
-        await reference.putFile(asset.uri);
-      }
+      try {
+        if (Platform.OS === 'android') {
+          // 파일 저장
+          await reference.putString(asset.base64, 'base64', {
+            contentType: asset.type,
+          });
+        } else {
+          // 파일 저장
+          await reference.putFile(asset.uri);
+        }
 
-      // 다운로드할 수 있는 (Image를 통해 보여줄 수 있는) URL 생성
-      photoURL = imageRes ? await reference.getDownloadURL() : null;
+        // 다운로드할 수 있는 (Image를 통해 보여줄 수 있는) URL 생성
+        photoURL = imageRes ? await reference.getDownloadURL() : null;
+      } catch (e) {
+        console.log('storage error - ', e);
+        return;
+      }
     }
 
     const user = {
