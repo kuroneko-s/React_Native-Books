@@ -1,9 +1,9 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import SignInScreen from './SignInScreen';
-import WelcomeScreen from './WelcomeScreen';
+import SignInScreen from './postscreen/SignInScreen';
+import WelcomeScreen from './postscreen/WelcomeScreen';
 import {useUserContext} from '../contexts/UserContext';
-import MainTab from './MainTab';
+import MainTab from './root/MainTab';
 
 const Stack = createNativeStackNavigator();
 

@@ -9,11 +9,11 @@ import {
   Alert,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import SignButtons from '../components/SignButtons';
-import SignForm from '../components/SignForm';
-import {useUserContext} from '../contexts/UserContext';
-import {signIn, signUp} from '../lib/auth';
-import {getUser} from '../lib/users';
+import SignButtons from '../../components/SignButtons';
+import SignForm from '../../components/SignForm';
+import {useUserContext} from '../../contexts/UserContext';
+import {signIn, signUp} from '../../lib/auth';
+import {getUser} from '../../lib/users';
 
 function SignInScreen({navigation, route}) {
   const {isSignUp} = route.params ?? {};
