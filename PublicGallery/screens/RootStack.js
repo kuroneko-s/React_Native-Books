@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, {useEffect} from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignInScreen from './postscreen/SignInScreen';
 import WelcomeScreen from './postscreen/WelcomeScreen';
-import { useUserContext } from '../contexts/UserContext';
+import {useUserContext} from '../contexts/UserContext';
 import MainTab from './root/MainTab';
-import { subscribeAuth } from './../lib/auth';
-import { getUser } from '../lib/users';
+import {subscribeAuth} from './../lib/auth';
+import {getUser} from '../lib/users';
 import UploadScreen from './postscreen/UploadScreen';
 
 const Stack = createNativeStackNavigator();
 
 function RootStack() {
-  const { user, setUser } = useUserContext();
+  const {user, setUser} = useUserContext();
 
   useEffect(() => {
     const unsubscribe = subscribeAuth(async currentUser => {
