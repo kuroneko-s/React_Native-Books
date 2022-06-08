@@ -2,7 +2,7 @@ import firestore from '@react-native-firebase/firestore';
 
 export const postsCollection = firestore().collection('posts');
 
-export function createPost({user, photoURL, description}) {
+export function createPost({ user, photoURL, description }) {
   // ID를 알고잇을때에는 doc.set, 모를땐 add
   return postsCollection.add({
     user,
@@ -12,7 +12,10 @@ export function createPost({user, photoURL, description}) {
   });
 }
 
-export async function getPosts(id) {
-  const doc = await postsCollection.doc(id).get();
-  return doc.data();
+export async function getPosts() {
+  const snapshot = await postsCollection.get();
+  return snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }))
 }
