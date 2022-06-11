@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-export const PAGE_SIZE = 3;
+export const PAGE_SIZE = 12;
 export const postsCollection = firestore().collection('posts');
 
 export function createPost({user, photoURL, description}) {
@@ -12,45 +12,79 @@ export function createPost({user, photoURL, description}) {
   });
 }
 
-export async function getPosts() {
-  const snapshot = await postsCollection
-    .orderBy('createAt', 'desc')
-    .limit(PAGE_SIZE)
-    .get();
+export async function getPosts({userId, id, mode} = {}) {
+  let query = postsCollection.orderBy('createAt', 'desc').limit(PAGE_SIZE);
+
+  if (userId) {
+    query = query.where('user.id', '==', userId);
+  }
+
+  if (id) {
+    const cursorDoc = await postsCollection.doc(id).get();
+    query =
+      mode === 'older'
+        ? query.startAfter(cursorDoc)
+        : query.endBefore(cursorDoc);
+  }
+
+  const snapshot = await query.get();
+
   return snapshot.docs.map(doc => ({
     id: doc.id,
     ...doc.data(),
   }));
 }
 
-export async function getOlderPosts(id) {
-  const cursorDoc = await postsCollection.doc(id).get();
+export async function getOlderPosts(id, userId) {
   // startAt도 있는데 얘는 id에 해당하는 값도 포함해서 넘겨주고 startAfter는 id에 해당하는 제외하고 넘겨줌
-  const snapshot = await postsCollection
+  /* const cursorDoc = await postsCollection.doc(id).get();
+  let query = postsCollection
     .orderBy('createAt', 'desc')
     .startAfter(cursorDoc)
-    .limit(PAGE_SIZE)
-    .get();
+    .limit(PAGE_SIZE);
 
-  const posts = snapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
-  return posts;
-}
+  if (userId) {
+    query = query.where('user.id', '==', userId);
+  }
 
-export async function getNewerPosts(id) {
-  const cursorDoc = await postsCollection.doc(id).get();
-  // endBefore - 특정 문서 이전의 문서들을 조회해준다(최신)
-  // 얘도 before랑 at이 있음 의미는 after, at이랑 같음
-  const snapshot = await postsCollection
-    .orderBy('createAt', 'desc')
-    .endBefore(cursorDoc)
-    .limit(PAGE_SIZE)
-    .get();
+  const snapshot = await query.get();
 
   return snapshot.docs.map(doc => ({
     id: doc.id,
     ...doc.data(),
   }));
+ */
+
+  return getPosts({
+    mode: 'older',
+    id,
+    userId,
+  });
+}
+
+export async function getNewerPosts(id, userId) {
+  // endBefore - 특정 문서 이전의 문서들을 조회해준다(최신)
+  // 얘도 before랑 at이 있음 의미는 after, at이랑 같음
+  /* const cursorDoc = await postsCollection.doc(id).get();
+  let query = postsCollection
+    .orderBy('createAt', 'desc')
+    .endBefore(cursorDoc)
+    .limit(PAGE_SIZE);
+
+  if (userId) {
+    query = query.where('user.id', '==', userId);
+  }
+
+  const snapshot = await query.get();
+
+  return snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  })); */
+
+  return getPosts({
+    mode: 'newer',
+    id,
+    userId,
+  });
 }

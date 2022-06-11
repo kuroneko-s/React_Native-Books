@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   FlatList,
   RefreshControl,
@@ -6,55 +6,10 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import PostCard from '../../components/PostCard';
-import {
-  getNewerPosts,
-  getOlderPosts,
-  getPosts,
-  PAGE_SIZE,
-} from '../../lib/posts';
+import usePosts from './../../hooks/usePosts';
 
 function FeedScreen() {
-  const [posts, setPosts] = useState(null);
-  // 더이상 Post가 있니 없니
-  const [noMorePost, setNoMorePost] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
-
-  useEffect(() => {
-    // useEffect에서 state에 대한 값은 받아올 수 있나봄
-    getPosts().then(setPosts);
-  }, []);
-
-  const onLoadMore = async () => {
-    if (noMorePost || !posts || posts.length < PAGE_SIZE) {
-      return;
-    }
-
-    const lastPost = posts[posts.length - 1];
-    const oldPosts = await getOlderPosts(lastPost.id);
-    if (oldPosts.length < PAGE_SIZE) {
-      // 포스트 있는거를 새롭게 받았는데 길이가 짧으면
-      setNoMorePost(true); // 더이상 포스트가 없다.
-    }
-
-    setPosts([...posts, ...oldPosts]);
-  };
-
-  const onRefresh = async () => {
-    if (!posts || posts.length === 0 || refreshing) {
-      return;
-    }
-
-    const firstPost = posts[0];
-    setRefreshing(true);
-    const newerPosts = await getNewerPosts(firstPost.id);
-    setRefreshing(false);
-
-    if (newerPosts.length === 0) {
-      return;
-    }
-
-    setPosts([...newerPosts, ...posts]);
-  };
+  const {posts, noMorePost, refreshing, onLoadMore, onRefresh} = usePosts();
 
   return (
     <FlatList
