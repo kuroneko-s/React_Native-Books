@@ -9,6 +9,7 @@ import {getUser} from '../lib/users';
 import UploadScreen from './postscreen/UploadScreen';
 import ModifyScreen from './postscreen/ModifyScreen';
 import SettingScreen from './postscreen/SettingScreen';
+import SplashScreen from 'react-native-splash-screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ function RootStack() {
 
       unsubscribe(); // 이부분이 구독을 즉시 취소함
       if (!currentUser) {
+        SplashScreen.hide();
         return;
       }
 
