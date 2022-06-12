@@ -53,7 +53,7 @@ const renderItem = ({item}) => (
     createdAt={item.createdAt}
     description={item.description}
     photoURL={item.photoURL}
-    postId={item.id}
+    id={item.id}
     user={item.user}
   />
 );

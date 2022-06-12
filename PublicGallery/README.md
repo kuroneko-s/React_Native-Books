@@ -12,7 +12,7 @@
       - [x] MyProfileScreen
   - [ ] PostStack
     - [x] UploadScreen
-    - [ ] ModifyScreen
+    - [x] ModifyScreen
     - [ ] SettingScreen
     - [x] SignInScreen
     - [x] WelcomeScreen
@@ -45,4 +45,5 @@ navigation의 reset기능이 있지만 버그가 많아서 비추천
 subscribeAuth() 의 return 값은 unsubscribe. 즉, 해당 상태를 지켜보는 (subscribe) 상태를 해제해주는 메서드임.      
 IOS에서 텍스트를 입력할때 enter를 막 많이 입력하면 텍스트가 야랄나서 이상하게 보이는 현상이 발생할 수 있어서 KeyboardAvoidingView로 막아줘야함    
 DB에서의 색인(index) 기능     
-페이지에 데이터를 추가 로딩해주는걸 페이지네이션이라고 하는 듯 ?
+페이지에 데이터를 추가 로딩해주는걸 페이지네이션이라고 하는 듯 ?      
+상태를 갱신? 해주는 방법들이 있음. 전역 상태로 선언해서 관리를 해도 되고, 리덕스 써도 되고, 리코일 라이브러리 써도 되고 리액트 쿼리 써도 되는데 지금 이책에서는 이벤트 리스너 사용할 예정임 ( spring eventListener, interceptor )   
