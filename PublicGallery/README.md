@@ -2,18 +2,18 @@
 
 ### 구조
 
-- [ ] RootStack
-  - [ ] MainTab
+- [x] RootStack
+  - [x] MainTab
     - [x] HomeStack
       - [x] FeedScreen
       - [x] PostScreen
       - [x] ProfileScreen
     - [x] MyProfileStack
       - [x] MyProfileScreen
-  - [ ] PostStack
+  - [x] PostStack
     - [x] UploadScreen
     - [x] ModifyScreen
-    - [ ] SettingScreen
+    - [x] SettingScreen
     - [x] SignInScreen
     - [x] WelcomeScreen
 
